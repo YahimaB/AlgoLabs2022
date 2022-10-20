@@ -160,7 +160,7 @@ void FeedPeople::Execute() {
     gameData->peopleDiedPercent = (float) gameData->peopleDied / (float) currentPeople;
 
     gameData->setPeople(gameData->peopleToFeed);
-    cout << gameData->peopleDied << "\t человек умерли с голоду \n";
+    cout << "\t " << gameData->peopleDied << " человек умерли с голоду \n";
 }
 
 void WelcomePeople::Execute() {
@@ -169,7 +169,7 @@ void WelcomePeople::Execute() {
     auto totalValue = deadValue + harvestValue + 1;
     auto newPeople = totalValue > 50 ? 50 : 0;
     gameData->setPeople(gameData->getPeople() + newPeople);
-    cout << newPeople << "\t человек прибыли в наш великий город \n";
+    cout << "\t " << newPeople << " человек прибыли в наш великий город \n";
 }
 
 void TryPlague::Execute() {
