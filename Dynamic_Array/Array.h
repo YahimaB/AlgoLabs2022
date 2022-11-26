@@ -142,9 +142,9 @@ public:
 
             for (int i = 0; i < other.size_; i++)
                 new(data_ + i) T(other.data_[i]);
-
-            return *this;
         }
+
+        return *this;
     }
 
     Array &operator=(Array &&other) noexcept {
@@ -158,9 +158,9 @@ public:
             other.size_ = 0;
             other.capacity_ = 0;
             other.data_ = nullptr;
-
-            return *this;
         }
+
+        return *this;
     }
 
     Iterator<false> iterator() { return Iterator<false>(this, false); }
@@ -174,6 +174,7 @@ public:
 private:
     static constexpr int DEFAULT_CAPACITY = 4;
     static constexpr int RESIZE_VALUE = 2;
+    friend class ArrayTest;
     int size_ = 0;
     int capacity_ = 0;
     T *data_ = nullptr;
