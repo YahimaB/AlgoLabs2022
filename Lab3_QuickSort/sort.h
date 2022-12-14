@@ -9,13 +9,11 @@ static int minInsertion = 12;
 
 template<typename T, typename Compare>
 void sort(T *first, T *last, Compare comp) {
-//    auto insertionTreshold = minInsertion == 0 ? defaultMinInsertion : minInsertion;
-    if (last - first <= minInsertion) {
-        insertionSort(first, last, comp);
-        return;
-    }
     while (first < last) {
-
+        if (last - first <= minInsertion) {
+            insertionSort(first, last, comp);
+            return;
+        }
 
         T *pi = partition(first, last, comp);
 
