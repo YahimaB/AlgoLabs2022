@@ -5,18 +5,17 @@
 #ifndef LAB3_QUICKSORT_SORT_H
 #define LAB3_QUICKSORT_SORT_H
 
-constexpr int defaultMinInsertion = 16;
-extern int minInsertion;
+static int minInsertion = 12;
 
 template<typename T, typename Compare>
 void sort(T *first, T *last, Compare comp) {
-    auto insertionTreshold = minInsertion == 0 ? defaultMinInsertion : minInsertion;
-
+//    auto insertionTreshold = minInsertion == 0 ? defaultMinInsertion : minInsertion;
+    if (last - first <= minInsertion) {
+        insertionSort(first, last, comp);
+        return;
+    }
     while (first < last) {
-        if (last - first < insertionTreshold) {
-            insertionSort(first, last, comp);
-            return;
-        }
+
 
         T *pi = partition(first, last, comp);
 
@@ -37,19 +36,18 @@ T *partition(T *first, T *last, Compare comp) {
     T *l = first;
     T *r = last;
 
-    while (l <= r) {
+    while (true) {
         while (comp(*l, pivot)) {
             l++;
         }
         while (comp(pivot, *r)) {
             r--;
         }
-
-        if (l < r) {
-            std::swap(*l, *r);
-            l++;
-            r--;
-        }
+        if (l >= r)
+            break;
+        std::swap(*l, *r);
+        l++;
+        r--;
     }
 
     return r;
