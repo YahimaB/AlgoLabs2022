@@ -7,6 +7,13 @@
 
 static int minInsertion = 12;
 
+template<typename T>
+void mySwap(T* a, T* b) {
+    T tmp(std::move(*a));
+    *a = std::move(*b);
+    *b = std::move(tmp);
+}
+
 template<typename T, typename Compare>
 void sort(T *first, T *last, Compare comp) {
     while (first < last) {
@@ -43,7 +50,7 @@ T *partition(T *first, T *last, Compare comp) {
         }
         if (l >= r)
             break;
-        std::swap(*l, *r);
+        mySwap(l, r);
         l++;
         r--;
     }
@@ -56,13 +63,13 @@ T getMedian(T *l, T *r, Compare comp) {
     T *median = l + (r - l) / 2;
 
     if (comp(*r, *l)) {
-        std::swap(*r, *l);
+        mySwap(r, l);
     }
     if (comp(*median, *l)) {
-        std::swap(*median, *l);
+        mySwap(median, l);
     }
     if (comp(*r, *median)) {
-        std::swap(*r, *median);
+        mySwap(r, median);
     }
     return *median;
 }
