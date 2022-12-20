@@ -3,8 +3,8 @@
 //
 #include <windows.h>
 #include <cassert>
+#include <algorithm>
 #include <iostream>
-
 
 #include "FixedSizeAllocator.h"
 
@@ -108,10 +108,64 @@ void FixedSizeAllocator::Destroy() {
 
 #ifdef _DEBUG
 
-void FixedSizeAllocator::DumpBlocks() const {
+void FixedSizeAllocator::DumpStat() const {
+    int pages_total = 0;
+    int blocks_initialized = 0;
+    int blocks_occupied = 0;
+
+    auto current_page = first_page_;
+    while (current_page != nullptr) {
+        pages_total++;
+        blocks_initialized += current_page->blocks_initialized;
+
+        auto free_blocks = GetFreeBlocks(current_page);
+        for (int i = 0; i < current_page->blocks_initialized; i++) {
+            if (std::find(free_blocks.begin(), free_blocks.end(), i) == free_blocks.end()) {
+                blocks_occupied++;
+            }
+        }
+
+        current_page = current_page->next_page;
+    }
+
+    std::cout << "___ FSA " << block_size_ << " ___" << "\n";
+    std::cout << "pages: " << pages_total << " | blocks: " << pages_total * blocks_per_page_ << "\n";
+    std::cout << "blocks_initialized: " << blocks_initialized << " | blocks_occupied: " << blocks_occupied << "\n";
+    std::cout << "\n";
 }
 
-void FixedSizeAllocator::DumpStat() const {
+void FixedSizeAllocator::DumpBlocks() const {
+    int pages_total = 0;
+
+    std::cout << "___ FSA " << block_size_ << " ___" << "\n";
+    auto current_page = first_page_;
+    while (current_page != nullptr) {
+        std::cout << " __ Page " << pages_total << " ___" << "\n";
+        pages_total++;
+
+        auto free_blocks = GetFreeBlocks(current_page);
+        for (int i = 0; i < current_page->blocks_initialized; i++) {
+            if (std::find(free_blocks.begin(), free_blocks.end(), i) == free_blocks.end()) {
+                std::cout << "Index: " << i << " | Address: "
+                          << (void *) ((byte *) (current_page->buffer) + i * block_size_) << "\n";
+            }
+        }
+
+        current_page = current_page->next_page;
+    }
+
+    std::cout << "\n";
+}
+
+std::vector<int> FixedSizeAllocator::GetFreeBlocks(Page *page) const {
+    std::vector<int> free_blocks;
+    int header = page->free_list_header;
+    while (header != -1) {
+        free_blocks.push_back(header);
+        header = *(int *) ((byte *) page->buffer + header * block_size_);
+    }
+
+    return free_blocks;
 }
 
 #endif

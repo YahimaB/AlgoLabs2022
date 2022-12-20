@@ -5,6 +5,7 @@
 #ifndef LAB4_MEMORYMANAGER_FIXEDSIZEALLOCATOR_H
 #define LAB4_MEMORYMANAGER_FIXEDSIZEALLOCATOR_H
 
+#include <vector>
 
 class FixedSizeAllocator {
 private:
@@ -37,9 +38,9 @@ public:
 #ifdef _DEBUG
 private:
     bool initialized_;
-#endif
 
-#ifdef _DEBUG
+    std::vector<int> GetFreeBlocks(Page *page) const;
+
 public:
     void DumpStat() const;
 
