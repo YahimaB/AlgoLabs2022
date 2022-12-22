@@ -22,9 +22,8 @@ private:
         Page *next_page = nullptr;
     };
 
-    int page_size_ = 10;
+    int page_size_ = 1024 * 1024;
     Page *first_page_ = nullptr;
-    int nInitializedBlocks = 0;
 
     const int free_block_size = sizeof(Block) + sizeof(int);
 
