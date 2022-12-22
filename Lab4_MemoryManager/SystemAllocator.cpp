@@ -73,6 +73,7 @@ void SystemAllocator::DumpStat() const {
     std::cout << "___ SystemAllocator ___" << "\n";
     std::cout << "total allocations: " << total_blocks_ << "\n";
     std::cout << "freed allocations: " << freed_blocks_ << "\n";
+    std::cout << "\n";
 }
 
 void SystemAllocator::DumpBlocks() const {

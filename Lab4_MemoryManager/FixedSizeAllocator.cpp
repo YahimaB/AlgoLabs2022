@@ -28,6 +28,11 @@ FixedSizeAllocator::Page *FixedSizeAllocator::CreatePage() const {
     return page;
 }
 
+void FixedSizeAllocator::Init(int block_size) {
+    auto page_size_bytes = 1024; //1 KB
+    Init(block_size, page_size_bytes / block_size + 1);
+}
+
 void FixedSizeAllocator::Init(int block_size, int blocks_per_page) {
 #ifdef _DEBUG
     assert(!initialized_ && "FSA::Init(): already initialized");

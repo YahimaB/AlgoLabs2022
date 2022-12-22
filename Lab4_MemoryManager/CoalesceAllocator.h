@@ -22,10 +22,11 @@ private:
         Page *next_page = nullptr;
     };
 
+    const int kFreeBlockSize = sizeof(Block) + sizeof(int);
+
     int page_size_ = 1024 * 1024;
     Page *first_page_ = nullptr;
 
-    const int free_block_size = sizeof(Block) + sizeof(int);
 
     [[nodiscard]] Page *CreatePage() const;
 

@@ -27,6 +27,8 @@ public:
 
     ~FixedSizeAllocator();
 
+    void Init(int block_size);
+
     void Init(int block_size, int blocks_per_page);
 
     void *Alloc();

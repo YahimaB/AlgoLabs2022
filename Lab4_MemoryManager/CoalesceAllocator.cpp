@@ -63,7 +63,7 @@ void *CoalesceAllocator::Alloc(size_t size) {
             auto current_free_block = (Block *) ((byte *) current_page->buffer + current_free_block_pos);
             int next_free_block_pos = *(int *) current_free_block->data;
             if (current_free_block->data_size >= size) {
-                if (current_free_block->data_size >= size + free_block_size) {
+                if (current_free_block->data_size >= size + kFreeBlockSize) {
                     auto new_block = (Block *) ((byte *) current_free_block->data + size);
                     new_block->left_neighbour = current_free_block;
                     new_block->data = (byte *) new_block + sizeof(Block);
