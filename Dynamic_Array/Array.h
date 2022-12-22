@@ -106,11 +106,17 @@ public:
             resize();
         }
 
-        for (int i = size_; i > index; i--) {
-            new(data_ + i) T(std::move(data_[i - 1]));
+        if (index == size_) {
+            new (data_ + size_) T(value);
+        } else {
+            new (data_ + size_) T(std::move(data_[size_ - 1]));
+            for (int i = size_ - 1; i > index; i--) {
+                data_[i] = std::move(data_[i - 1]);
+            }
+
+            data_[index] = value;
         }
 
-        new(data_ + index) T(value);
         size_++;
 
         return index;
