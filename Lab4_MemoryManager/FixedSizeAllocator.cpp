@@ -78,7 +78,7 @@ bool FixedSizeAllocator::Free(void *p) {
         auto first_ptr = (byte *) current_page->buffer;
         auto last_ptr = (byte *) current_page->buffer + blocks_per_page_ * block_size_;
 
-        if (last_ptr > p && first_ptr <= p) {
+        if (first_ptr <= p && p < last_ptr) {
             *(int *) p = current_page->free_list_header;
             auto block_offset = (byte *) p - first_ptr;
             current_page->free_list_header = (int) (block_offset / block_size_);
